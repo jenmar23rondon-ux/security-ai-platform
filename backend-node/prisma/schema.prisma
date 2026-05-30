@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  analyst
+  viewer
+}
+
+enum EventType {
+  login_success
+  login_failed
+  api_abuse
+  suspicious_activity
+  unknown_ip
+  geo_anomaly
+  system
+}
+
+enum RiskLevel {
+  bajo
+  medio
+  alto
+  critico
+}
+
+enum AlertStatus {
+  abierta
+  investigando
+  resuelta
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(viewer)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  events    SecurityEvent[]
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+model SecurityEvent {
+  id             Int       @id @default(autoincrement())
+  type           EventType
+  description    String
+  ip             String
+  country        String?
+  userAgent      String?
+  failedAttempts Int       @default(0)
+  requestCount   Int       @default(0)
+  metadata       Json?
+  createdAt      DateTime  @default(now())
+
+  userId         Int?
+  user           User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  riskScore      RiskScore?
+  alerts         Alert[]
+
+  @@index([type])
+  @@index([ip])
+  @@index([createdAt])
+  @@map("security_events")
+}
+
+model Alert {
+  id          Int         @id @default(autoincrement())
+  title       String
+  message     String
+  level       RiskLevel
+  status      AlertStatus @default(abierta)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  resolvedAt  DateTime?
+
+  eventId     Int
+  event       SecurityEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([level])
+  @@index([status])
+  @@map("alerts")
+}
+
+model RiskScore {
+  id          Int       @id @default(autoincrement())
+  score       Int
+  level       RiskLevel
+  reasons     String[]
+  model       String    @default("rules-v1")
+  createdAt   DateTime  @default(now())
+
+  eventId     Int       @unique
+  event       SecurityEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("risk_scores")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  entity    String
+  entityId  Int?
+  details   Json?
+  createdAt DateTime @default(now())
+
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([action])
+  @@map("audit_logs")
+}
+

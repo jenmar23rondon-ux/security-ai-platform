@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: security-ai-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: security_ai_platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  ai-service-python:
+    build:
+      context: ./ai-service-python
+    environment:
+      PORT: 8000
+    ports:
+      - "8000:8000"
+
+  backend-node:
+    build:
+      context: ./backend-node
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/security_ai_platform
+      JWT_SECRET: change_me_in_production
+      JWT_EXPIRES_IN: 7d
+      AI_SERVICE_URL: http://ai-service-python:8000
+      ALLOWED_ORIGINS: http://localhost:5173
+    depends_on:
+      - postgres
+      - ai-service-python
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      VITE_API_URL: http://localhost:3000
+    depends_on:
+      - backend-node
+    ports:
+      - "5173:4173"
+
+volumes:
+  postgres_data:

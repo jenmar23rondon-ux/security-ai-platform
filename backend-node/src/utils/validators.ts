@@ -5,6 +5,15 @@ export const loginSchema = z.object({
   password: z.string().min(6)
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email()
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(20),
+  password: z.string().min(8)
+});
+
 export const createUserSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
@@ -35,4 +44,3 @@ export const createEventSchema = z.object({
 export const updateAlertSchema = z.object({
   status: z.enum(["abierta", "investigando", "resuelta"])
 });
-

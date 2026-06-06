@@ -7,6 +7,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Events } from "./pages/Events";
 import { Alerts } from "./pages/Alerts";
 import { Users } from "./pages/Users";
+import { Audit } from "./pages/Audit";
 
 function Shell() {
   return (
@@ -18,6 +19,7 @@ function Shell() {
           <Route path="/events" element={<Events />} />
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/audit" element={<Audit />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
@@ -34,4 +36,3 @@ export default function App() {
     </AuthProvider>
   );
 }
-

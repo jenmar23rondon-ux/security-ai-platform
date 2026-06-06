@@ -85,8 +85,9 @@ button, input, select { font: inherit; }
   display: grid;
   gap: 16px;
 }
-.stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.stats-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .chart-grid, .split-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 16px; }
+.section-gap { margin-top: 16px; }
 
 .stat-card, .panel, .alert-card {
   background: #111827;
@@ -153,4 +154,3 @@ td { color: #e2e8f0; }
   .stats-grid, .chart-grid, .split-grid, .form-grid { grid-template-columns: 1fr; }
   .form-grid .wide { grid-column: auto; }
 }
-

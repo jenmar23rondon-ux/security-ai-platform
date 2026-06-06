@@ -2,7 +2,9 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
 import { env } from "./config/env";
+import { swaggerSpec } from "./config/swagger";
 import { apiRateLimit } from "./middlewares/rateLimit.middleware";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { authRoutes } from "./routes/auth.routes";
@@ -10,6 +12,8 @@ import { usersRoutes } from "./routes/users.routes";
 import { eventsRoutes } from "./routes/events.routes";
 import { alertsRoutes } from "./routes/alerts.routes";
 import { dashboardRoutes } from "./routes/dashboard.routes";
+import { auditRoutes } from "./routes/audit.routes";
+import { logger } from "./utils/logger";
 
 export const app = express();
 
@@ -22,14 +26,15 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json({ limit: "1mb" }));
-app.use(morgan("dev"));
+app.use(morgan("combined", { stream: { write: (message) => logger.info(message.trim()) } }));
 app.use(apiRateLimit);
 
 app.get("/", (_req, res) => res.json({ name: "Security AI Platform API", status: "ok" }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/events", eventsRoutes);
 app.use("/alerts", alertsRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/audit", auditRoutes);
 app.use(errorMiddleware);
-

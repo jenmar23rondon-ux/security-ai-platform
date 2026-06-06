@@ -1,14 +1,32 @@
 # Security AI Platform
 
-An intelligent security monitoring platform that receives security events, analyzes risk with a Python/FastAPI service, stores results in PostgreSQL, and displays alerts and metrics in a React dashboard.
+An intelligent security monitoring platform that receives security events, analyzes risk with a Python/FastAPI service, stores results in PostgreSQL, and displays alerts, audit logs and metrics in a React dashboard.
 
 ## Overview
 
 This project is a small SOC-style platform built with three services:
 
-- **backend-node**: Main API for authentication, users, security events, alerts, dashboard data, PostgreSQL access, and communication with the AI service.
+- **backend-node**: Main API for authentication, users, audit logs, security events, alerts, dashboard data, PostgreSQL access and communication with the AI service.
 - **ai-service-python**: FastAPI microservice that calculates risk scores using rule-based analysis.
-- **frontend**: React dashboard for events, alerts, users, and charts.
+- **frontend**: React dashboard for events, alerts, users, audit activity, suspicious IPs and charts.
+
+## Screenshots
+
+### Security dashboard
+
+<img src="docs/screenshots/dashboard.png" alt="Security AI Platform dashboard with metrics, suspicious activity and recent alerts" width="900" />
+
+### Security events
+
+<img src="docs/screenshots/events.png" alt="Security event registration screen for suspicious login attempts" width="900" />
+
+### User management
+
+<img src="docs/screenshots/users.png" alt="User management screen with roles and active user controls" width="900" />
+
+### Audit logs
+
+<img src="docs/screenshots/audit.png" alt="Audit dashboard showing login and administrative activity" width="900" />
 
 ## Architecture
 
@@ -29,9 +47,16 @@ Python FastAPI Risk Service
 
 - JWT authentication
 - Role-based access control
+- Audit dashboard for login and user-management actions
+- Brute-force login protection with temporary account lockout
+- Password recovery flow with temporary reset tokens
+- Winston logging for app, error and security logs
+- Swagger API documentation at `/api-docs`
+- Jest + Supertest API tests
 - Security event ingestion
 - Risk scoring with Python/FastAPI
 - Automatic alert creation for high-risk events
+- Suspicious IP detection for repeated failed login attempts
 - Dashboard metrics
 - Event and alert tables
 - User management
@@ -66,6 +91,10 @@ Python FastAPI Risk Service
 - PostgreSQL
 - JWT
 - Socket.IO
+- Winston
+- Swagger
+- Jest
+- Supertest
 
 ### AI Service
 
@@ -78,16 +107,28 @@ Python FastAPI Risk Service
 
 ```txt
 security-ai-platform/
-├── backend-node/
-│   ├── prisma/
-│   └── src/
-├── ai-service-python/
-│   └── app/
-├── frontend/
-│   └── src/
-├── docker-compose.yml
-├── README.md
-└── .gitignore
+|-- backend-node/
+|   |-- prisma/
+|   |   `-- migrations/
+|   `-- src/
+|       |-- controllers/
+|       |-- routes/
+|       |-- services/
+|       |-- middlewares/
+|       `-- utils/
+|-- ai-service-python/
+|   `-- app/
+|-- frontend/
+|   `-- src/
+|       |-- api/
+|       |-- components/
+|       |-- context/
+|       `-- pages/
+|-- docs/
+|   `-- screenshots/
+|-- docker-compose.yml
+|-- README.md
+`-- .gitignore
 ```
 
 ## Local Setup
@@ -122,9 +163,21 @@ ALLOWED_ORIGINS=http://localhost:5173
 ```bash
 cd backend-node
 npm install
-npx prisma migrate dev --name init
+npx prisma migrate dev
 npm run seed
 npm run dev
+```
+
+Run tests:
+
+```bash
+npm test
+```
+
+Open API docs:
+
+```txt
+http://localhost:3000/api-docs
 ```
 
 ### 3. Python AI Service
@@ -189,6 +242,13 @@ AI service response:
 }
 ```
 
+## Security Notes
+
+- After 5 failed login attempts, an account is locked for 15 minutes.
+- Failed logins are recorded as security events and audit logs.
+- Password reset tokens are stored as SHA-256 hashes and expire after 30 minutes.
+- `.env` files are ignored by Git.
+
 ## Docker
 
 Docker files and `docker-compose.yml` are included. If Docker is installed:
@@ -199,7 +259,5 @@ docker compose up --build
 
 ## Notes
 
-- `.env` files are ignored by Git.
-- Use `.env.example` files as templates.
+- Use `.env.example` files as templates if you add them later.
 - The Python service currently uses rule-based analysis and can later be replaced or extended with ML models.
-

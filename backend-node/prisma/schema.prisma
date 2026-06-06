@@ -43,6 +43,10 @@ model User {
   password  String
   role      UserRole @default(viewer)
   active    Boolean  @default(true)
+  failedLoginAttempts Int @default(0)
+  lockedUntil DateTime?
+  resetTokenHash String?
+  resetTokenExpiresAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -112,6 +116,7 @@ model AuditLog {
   action    String
   entity    String
   entityId  Int?
+  ip        String?
   details   Json?
   createdAt DateTime @default(now())
 
@@ -119,6 +124,6 @@ model AuditLog {
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([action])
+  @@index([createdAt])
   @@map("audit_logs")
 }
-

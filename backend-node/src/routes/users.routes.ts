@@ -8,4 +8,4 @@ export const usersRoutes = Router();
 usersRoutes.use(requireAuth, requireRole("admin"));
 usersRoutes.get("/", usersController.listUsers);
 usersRoutes.post("/", usersController.createUser);
-
+usersRoutes.delete("/:id", usersController.deleteUser);

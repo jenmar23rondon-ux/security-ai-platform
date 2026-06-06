@@ -1,4 +1,4 @@
-import { Activity, Bell, LayoutDashboard, LogOut, Shield, Users } from "lucide-react";
+import { Activity, Bell, ClipboardList, LayoutDashboard, LogOut, Shield, Users } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -16,6 +16,7 @@ export function Navbar() {
         <NavLink to="/events"><Activity size={17} />Eventos</NavLink>
         <NavLink to="/alerts"><Bell size={17} />Alertas</NavLink>
         <NavLink to="/users"><Users size={17} />Usuarios</NavLink>
+        <NavLink to="/audit"><ClipboardList size={17} />Auditoria</NavLink>
       </nav>
       <div className="session">
         <span>{user?.name} ({user?.role})</span>
@@ -26,4 +27,3 @@ export function Navbar() {
     </header>
   );
 }
-

@@ -25,6 +25,11 @@ export function Users() {
     await load();
   }
 
+  async function removeUser(id: number) {
+    await api.delete(`/users/${id}`);
+    await load();
+  }
+
   useEffect(() => {
     load();
   }, []);
@@ -43,11 +48,10 @@ export function Users() {
       </form>
       <section className="panel table-wrap">
         <table>
-          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th></tr></thead>
-          <tbody>{users.map((user) => <tr key={user.id}><td>{user.name}</td><td>{user.email}</td><td>{user.role}</td><td>{user.active ? "Activo" : "Inactivo"}</td></tr>)}</tbody>
+          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>{users.map((user) => <tr key={user.id}><td>{user.name}</td><td>{user.email}</td><td>{user.role}</td><td>{user.active ? "Activo" : "Inactivo"}</td><td><button className="danger" disabled={!user.active} onClick={() => removeUser(user.id)}>Desactivar</button></td></tr>)}</tbody>
         </table>
       </section>
     </main>
   );
 }
-

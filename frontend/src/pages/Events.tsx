@@ -9,7 +9,7 @@ export function Events() {
   const [form, setForm] = useState({
     type: "login_failed",
     description: "Intentos fallidos desde IP desconocida",
-    ip: "181.50.12.10",
+    ip: "203.0.113.42",
     country: "Colombia",
     failedAttempts: 12,
     requestCount: 20
@@ -50,4 +50,3 @@ export function Events() {
     </main>
   );
 }
-

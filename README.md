@@ -12,6 +12,8 @@ This project is a small SOC-style platform built with three services:
 
 ## Screenshots
 
+The screenshots use sanitized demo data and documentation IP ranges to avoid exposing personal or real network information.
+
 ### Security dashboard
 
 <img src="docs/screenshots/dashboard.png" alt="Security AI Platform dashboard with metrics, suspicious activity and recent alerts" width="900" />
@@ -23,6 +25,10 @@ This project is a small SOC-style platform built with three services:
 ### User management
 
 <img src="docs/screenshots/users.png" alt="User management screen with roles and active user controls" width="900" />
+
+### Alert triage
+
+<img src="docs/screenshots/alerts.png" alt="Alert triage screen with brute force and API abuse alerts" width="900" />
 
 ### Audit logs
 
@@ -224,7 +230,7 @@ Create a security event:
 {
   "type": "login_failed",
   "description": "Multiple failed login attempts from an unknown IP",
-  "ip": "181.50.12.10",
+  "ip": "203.0.113.42",
   "country": "Colombia",
   "failedAttempts": 12,
   "requestCount": 20

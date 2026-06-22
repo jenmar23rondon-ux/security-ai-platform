@@ -263,6 +263,37 @@ Docker files and `docker-compose.yml` are included. If Docker is installed:
 docker compose up --build
 ```
 
+## Deployment Notes
+
+This repository is a monorepo with three deployable services. Do not deploy the
+repository root as a single Railway service. Create one service per folder:
+
+| Service | Platform | Root directory |
+| --- | --- | --- |
+| Backend API | Railway | `backend-node` |
+| Python AI service | Railway | `ai-service-python` |
+| Frontend | Vercel or Railway | `frontend` |
+
+Recommended production variables for the backend service:
+
+```env
+DATABASE_URL=<Railway PostgreSQL DATABASE_URL>
+JWT_SECRET=<long-random-secret>
+JWT_EXPIRES_IN=7d
+NODE_ENV=production
+AI_SERVICE_URL=<Python AI service URL>
+ALLOWED_ORIGINS=<Frontend URL>
+```
+
+Recommended production variable for the frontend:
+
+```env
+VITE_API_URL=<Backend API URL>
+```
+
+On Railway, add public networking only to the services that need browser access
+(backend and optional frontend). PostgreSQL should stay private.
+
 ## Notes
 
 - Use `.env.example` files as templates if you add them later.

@@ -14,6 +14,19 @@ This project is a small SOC-style platform built with three services:
 
 **Security AI Platform** is a SOC dashboard with risk scoring, audit logs, suspicious activity detection and a Python risk-analysis microservice.
 
+## Live Demo
+
+[Open Security AI Platform](https://security-ai-platform.vercel.app)
+
+Demo credentials:
+
+```text
+Email: admin@security.local
+Password: Admin1234
+```
+
+> This is an educational portfolio environment. Demo data may be changed or reset.
+
 ## Screenshots
 
 The screenshots use sanitized demo data and documentation IP ranges to avoid exposing personal or real network information.
@@ -321,6 +334,13 @@ On Railway, add public networking only to the services that need browser access
 - Swagger API documentation.
 - Jest + Supertest API testing.
 - Docker-ready multi-service architecture.
+
+## Author
+
+Built by Jenmar Rondon.
+
+- GitHub: [jenmar23rondon-ux](https://github.com/jenmar23rondon-ux)
+- Repository: [security-ai-platform](https://github.com/jenmar23rondon-ux/security-ai-platform)
 
 ## License
 

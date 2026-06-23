@@ -8,7 +8,7 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: "admin@security.local" },
-    update: { password, role: "admin", active: true },
+    update: { role: "admin", active: true },
     create: {
       name: "Admin Security",
       email: "admin@security.local",
@@ -26,4 +26,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-

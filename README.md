@@ -10,6 +10,10 @@ This project is a small SOC-style platform built with three services:
 - **ai-service-python**: FastAPI microservice that calculates risk scores using rule-based analysis.
 - **frontend**: React dashboard for events, alerts, users, audit activity, suspicious IPs and charts.
 
+## Project Identity
+
+**Security AI Platform** is a SOC dashboard with risk scoring, audit logs, suspicious activity detection and a Python risk-analysis microservice.
+
 ## Screenshots
 
 The screenshots use sanitized demo data and documentation IP ranges to avoid exposing personal or real network information.
@@ -222,6 +226,14 @@ Password: Admin1234
 
 Change this user before using the project outside local development.
 
+## Testing
+
+- Jest + Supertest backend API tests.
+- Auth and protected-route checks.
+- Swagger documentation for manual API validation.
+- Frontend production build validation.
+- Recommended next tests: role permissions, audit events and password reset flow.
+
 ## API Examples
 
 Create a security event:
@@ -298,3 +310,18 @@ On Railway, add public networking only to the services that need browser access
 
 - Use `.env.example` files as templates if you add them later.
 - The Python service currently uses rule-based analysis and can later be replaced or extended with ML models.
+
+## What I Learned
+
+- JWT authentication, RBAC and password reset flows.
+- PostgreSQL data modeling with Prisma.
+- Audit logging for security-sensitive actions.
+- Brute-force protection and suspicious login detection.
+- Python FastAPI microservice integration.
+- Swagger API documentation.
+- Jest + Supertest API testing.
+- Docker-ready multi-service architecture.
+
+## License
+
+MIT License.

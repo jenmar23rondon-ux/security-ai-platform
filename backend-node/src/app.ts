@@ -3,7 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
-import { env } from "./config/env";
+import { isAllowedOrigin } from "./config/env";
 import { swaggerSpec } from "./config/swagger";
 import { apiRateLimit } from "./middlewares/rateLimit.middleware";
 import { errorMiddleware } from "./middlewares/error.middleware";
@@ -20,7 +20,7 @@ export const app = express();
 app.use(helmet());
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || env.allowedOrigins.includes(origin)) return callback(null, true);
+    if (isAllowedOrigin(origin)) return callback(null, true);
     return callback(new Error(`CORS no permitido: ${origin}`));
   },
   credentials: true

@@ -14,3 +14,7 @@ export const env = {
     .filter(Boolean)
 };
 
+export function isAllowedOrigin(origin?: string) {
+  if (!origin) return true;
+  return env.allowedOrigins.includes(origin) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+}
